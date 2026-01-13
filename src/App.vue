@@ -4,36 +4,54 @@ import SearchBar from './components/SearchBar.vue';
 import CurrentWeather from './components/CurrentWeather.vue';
 import ForecastList from './components/ForecastList.vue';
 import EmptyState from './components/EmptyState.vue';
+import { useWeather } from './composables/useWeather';
+import ErrorMessage from './components/ErrorMessage.vue';
+import Spinner from './components/Spinner.vue';
+import { ref } from 'vue';
+
+const { weatherData, cityName, isLoading, error, fetchWeatherData, clearWeatherData } = useWeather();
+
+const searchBarRef = ref<InstanceType<typeof SearchBar> | null>(null);
+
+const handleSearch = (city: string) => {
+  if (!city) {
+    clearWeatherData();
+    return;
+  }
+  fetchWeatherData(city);
+}
 
 </script>
 
 <template>
   <div class="min-h-screen flex flex-col items-center py-8 px-4 md:px-8 transition-all duration-700">
-    <!-- App Header -->
     <AppHeader />
 
-    <!-- Search Bar -->
-    <div class="w-full max-w-2xl z-20 mb-8">
-      <SearchBar />
-    </div>
+    <SearchBar ref="searchBarRef" @search="handleSearch" />
+
+    <!-- Error fallback -->
+    <ErrorMessage :message="error" />
+
+    <!-- Loading State -->
+    <Spinner v-if="isLoading" />
 
     <!-- Empty State, when no data is available -->
-    <div class="w-full max-w-4xl">
+    <div v-if="!isLoading && !weatherData && !error" class="w-full max-w-4xl">
       <EmptyState />
     </div>
 
     <!-- Weather Data Display, when data is available -->
-    <transition v-if="false" name="slide-up">
+    <transition v-if="weatherData && !isLoading" name="slide-up">
       <div class="w-full max-w-6xl px-4 lg:px-0">
 
         <!-- Current Weather Card -->
         <div class="mb-8">
-          <CurrentWeather />
+          <CurrentWeather :weather="weatherData.current" :cityName="cityName" />
         </div>
 
         <!-- Forecast Card -->
         <div>
-          <ForecastList />
+          <ForecastList :forecast="weatherData.daily" />
         </div>
       </div>
     </transition>

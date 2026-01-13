@@ -1,5 +1,10 @@
 <script setup lang="ts">
+import type { DailyForecast } from '../types/forecast';
 import ForecastDay from './ForecastDay.vue';
+
+defineProps<{
+  forecast: DailyForecast[];
+}>();
 </script>
 
 <template>
@@ -23,9 +28,9 @@ import ForecastDay from './ForecastDay.vue';
       </div>
     </div>
 
-    <!-- Forecast Grid -->
+    <!-- Forecast Data Grid -->
     <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
-      <ForecastDay />
+      <ForecastDay v-for="day in forecast" :key="day.dt" :day="day" />
     </div>
   </div>
 </template>

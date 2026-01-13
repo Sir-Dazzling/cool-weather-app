@@ -68,7 +68,7 @@ export interface ICurrentWeatherData {
     description: string;
 }
 
-export interface AppWeatherData {
+export interface IAppWeatherData {
   current: ICurrentWeatherData;
   daily: DailyForecast[];
   cityName: string;
