@@ -1,0 +1,1 @@
+export const POPULAR_CITIES = ['London', 'Lagos', 'New York', 'Tokyo', 'Paris', 'Sydney'];
