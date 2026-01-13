@@ -1,4 +1,4 @@
-import type { IClouds, ICoordinates, IWind, WeatherCondition } from "./weather";
+import type { IClouds, ICoordinates, IWind, IWeatherCondition } from "./weather";
 
 export interface IMainForecastData {
     temp: number;
@@ -19,7 +19,7 @@ export interface IForecastSys {
 export interface IForecastItem {
     dt: number;
     main: IMainForecastData;
-    weather: WeatherCondition[];
+    weather: IWeatherCondition[];
     clouds: IClouds;
     wind: IWind;
     visibility: number;
@@ -56,6 +56,6 @@ export interface ITemperature {
 
 export interface IDailyForecast {
     dt: number;
-    weather: WeatherCondition[];
+    weather: IWeatherCondition[];
     temp: ITemperature;
 }

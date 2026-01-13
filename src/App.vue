@@ -7,7 +7,8 @@ import EmptyState from './components/EmptyState.vue';
 import { useWeather } from './composables/useWeather';
 import ErrorMessage from './components/ErrorMessage.vue';
 import Spinner from './components/Spinner.vue';
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
+import { useWeatherTheme } from './composables/useWeatherTheme';
 
 const { weatherData, cityName, isLoading, error, fetchWeatherData, clearWeatherData } = useWeather();
 
@@ -27,10 +28,39 @@ const handlePopularCityClick = (city: string) => {
   searchBarRef.value?.setQueryWithAnimation(city);
 }
 
+// Dynamic theme based on current weather - computed reactively
+const theme = computed(() => {
+  const currentWeatherCondition = weatherData.value?.current.weather?.[0];
+  const { theme: weatherTheme } = useWeatherTheme(currentWeatherCondition);
+  return weatherTheme.value;
+});
+
+const dynamicStyles = computed(() => ({
+  background: theme.value.bgGradient,
+  '--dynamic-primary': theme.value.primaryColor,
+  '--dynamic-secondary': theme.value.secondaryColor,
+  '--dynamic-accent': theme.value.accentColor,
+  '--dynamic-text-primary': theme.value.textPrimary,
+  '--dynamic-text-secondary': theme.value.textSecondary,
+  '--dynamic-card-bg': theme.value.cardBg,
+  '--dynamic-border': theme.value.borderColor,
+  '--dynamic-icon': theme.value.iconColor,
+}));
+
+const severityClass = computed(() => {
+  const severity = theme.value.severity;
+  return {
+    'severity-normal': severity === 'normal',
+    'severity-warning': severity === 'warning',
+    'severity-severe': severity === 'severe',
+  };
+});
+
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col items-center py-8 px-4 md:px-8 transition-all duration-700">
+  <div class="min-h-screen flex flex-col items-center py-8 px-4 md:px-8 transition-all duration-700"
+    :style="dynamicStyles" :class="severityClass">
     <AppHeader />
 
     <SearchBar ref="searchBarRef" @search="handleSearch" />

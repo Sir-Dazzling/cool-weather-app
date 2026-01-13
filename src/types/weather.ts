@@ -1,11 +1,11 @@
-import type { DailyForecast } from "./forecast";
+import type { IDailyForecast } from "./forecast";
 
 export interface ICoordinates {
  lon: number;
  lat: number;   
 }
 
-export interface WeatherCondition {
+export interface IWeatherCondition {
   id: number;
   main: string;
   description: string;
@@ -43,7 +43,7 @@ export interface ISys {
 
 export interface ICurrentWeatherApiResponse {
     coord: ICoordinates;
-    weather: WeatherCondition[];
+    weather: IWeatherCondition[];
     base: string;
     main: IMainWeatherData;
     visibility: number;
@@ -64,12 +64,26 @@ export interface ICurrentWeatherData {
     feels_like: number;
     humidity: number;
     wind: IWind;
-    weather: WeatherCondition[];
+    weather: IWeatherCondition[];
     description: string;
 }
 
 export interface IAppWeatherData {
-  current: ICurrentWeatherData;
-  daily: DailyForecast[];
-  cityName: string;
+    current: ICurrentWeatherData;
+    daily: IDailyForecast[];
+    cityName: string;
+}
+
+export interface IWeatherTheme {
+    name: string;
+    bgGradient: string;
+    cardBg: string;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    textPrimary: string;
+    textSecondary: string;
+    borderColor: string;
+    iconColor: string;
+    severity: 'normal' | 'warning' | 'severe';
 }
