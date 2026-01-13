@@ -54,7 +54,7 @@ export interface ITemperature {
     min: number;
 }
 
-export interface DailyForecast {
+export interface IDailyForecast {
     dt: number;
     weather: WeatherCondition[];
     temp: ITemperature;

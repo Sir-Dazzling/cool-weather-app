@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { DailyForecast } from '../types/forecast';
+import type { IDailyForecast } from '../types/forecast';
 
 defineProps<{
-  day: DailyForecast;
+  day: IDailyForecast;
 }>();
 </script>
 
@@ -36,7 +36,7 @@ defineProps<{
         <span class="text-xl font-bold text-[#0F1419]" style="
                 font-family: var(--font-heading);
               ">
-          <!-- {{ Math.round(day.temp.max) }}° -->
+          {{ Math.round(day.temp.max) }}°
         </span>
       </div>
       <span class="text-base text-[#536878]" style="

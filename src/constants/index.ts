@@ -4,3 +4,10 @@ export const BASE_URL = 'https://api.openweathermap.org/data/2.5';
 
 // Search configuration
 export const MIN_SEARCH_LENGTH = 3;
+
+// Temperature Extremes for forecast processing
+export const TEMP_MIN_INITIAL = 100;
+export const TEMP_MAX_INITIAL = -100;
+
+// Forecast Configuration
+export const FORECAST_DAYS = 5;

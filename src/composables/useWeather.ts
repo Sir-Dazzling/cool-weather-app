@@ -1,6 +1,7 @@
 import { ref } from "vue";
 import type { IAppWeatherData } from "../types/weather";
 import { weatherService } from "../services/weatherService";
+import { aggregateForecastByDay } from "../utils/forecastUtils";
 
 export function useWeather() {
     const weatherData = ref<IAppWeatherData | null>(null);
@@ -33,7 +34,7 @@ export function useWeather() {
                     weather: currentWeather.weather,
                     description: currentWeather.weather[0]?.description ?? "N/A",
                 },
-                daily: forecast.list as any,
+                daily: aggregateForecastByDay(forecast.list),
             }
             
         } catch (err: any) {

@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import type { DailyForecast } from '../types/forecast';
+import type { IDailyForecast } from '../types/forecast';
 import ForecastDay from './ForecastDay.vue';
 
 defineProps<{
-  forecast: DailyForecast[];
+  forecast: IDailyForecast[];
 }>();
 </script>
 
