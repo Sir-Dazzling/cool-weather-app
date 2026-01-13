@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import type { IDailyForecast } from '../types/forecast';
+import { formatDayWithDate } from '../utils/dateUtils';
 
 defineProps<{
   day: IDailyForecast;
 }>();
+
+// Getting the day label (Today, Tommorow or "Mon 15")
+const getDayLabel = (dt: number) => formatDayWithDate(dt);
 </script>
 
 <template>
@@ -20,7 +24,7 @@ defineProps<{
               font-family: var(--font-heading); 
     
             ">
-        Today
+        {{ getDayLabel(day.dt) }}
       </span>
     </div>
 
@@ -49,7 +53,7 @@ defineProps<{
     <!-- Weather Description -->
     <p v-if="day.weather && day.weather[0]"
       class="text-xs text-center capitalize px-3 py-1.5 rounded-full transition-colors duration-200 text-[#45B1E8] bg-[#E0F2FB] font-[600]">
-      <!-- {{ day.weather[0].main }} -->
+      {{ day.weather[0].main }}
     </p>
   </div>
 </template>

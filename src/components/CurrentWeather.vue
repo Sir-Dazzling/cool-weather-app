@@ -1,3 +1,18 @@
+<script setup lang="ts">
+import type { IAppWeatherData } from '../types/weather';
+import { getCurrentDateFormatted } from '../utils/dateUtils';
+
+defineProps<{
+  currentWeather: IAppWeatherData['current'];
+  cityName: string;
+}>();
+
+
+const formatTemp = (temp: number) => Math.round(temp);
+const currentDate = getCurrentDateFormatted()
+
+</script>
+
 <template>
   <div class="rounded-3xl p-8 md:p-10 animate-fade-in transition-all duration-700"
     style="box-shadow: var(--shadow-md);">
@@ -5,22 +20,22 @@
     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
       <div>
         <h2 class="text-3xl md:text-4xl font-bold mb-1" style="font-family: var(--font-heading);">
-          Lagos
+          {{ cityName }}
         </h2>
         <p class="text-sm font-medium" style="font-family: var(--font-body);">
-          12 Jan 2026
+          {{ currentDate }}
         </p>
       </div>
 
       <!-- Temperature Display -->
       <div class="flex items-center gap-4">
-        <div>
+        <template v-if="currentWeather.weather && currentWeather.weather[0]">
           <!-- To Do -->
           <p>Temp icon</p>
-        </div>
+        </template>
         <div class="flex items-baseline">
           <span class="text-7xl md:text-8xl font-light tracking-tighter" style="font-family: var(--font-heading);">
-            25
+            {{ formatTemp(currentWeather.temp) }}
           </span>
           <span class="text-4xl font-light ml-1">°C</span>
         </div>
@@ -28,9 +43,9 @@
     </div>
 
     <!-- Weather Description -->
-    <div>
+    <div class="mb-6" v-if="currentWeather.weather && currentWeather.weather[0]">
       <p class="text-lg font-medium capitalize" style="font-family: var(--font-body);">
-        Test weather description
+        {{ currentWeather.weather[0].description }}
       </p>
     </div>
 
@@ -49,7 +64,7 @@
           </span>
         </div>
         <span class="text-2xl font-semibold" style="font-family: var(--font-heading);">
-          25°C
+          {{ formatTemp(currentWeather.feels_like) }}°C
         </span>
       </div>
 
@@ -66,12 +81,13 @@
           </span>
         </div>
         <span class="text-2xl font-semibold" style="font-family: var(--font-heading);">
-          25%
+          {{ currentWeather.humidity }}%
         </span>
       </div>
 
       <!-- Wind Speed -->
-      <div class="flex flex-col gap-2 p-4 rounded-xl transition-all duration-200 hover:bg-black/5">
+      <div class="flex flex-col gap-2 p-4 rounded-xl transition-all duration-200 hover:bg-black/5"
+        v-if="currentWeather.wind">
         <div class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -82,14 +98,15 @@
         </div>
         <div class="flex items-baseline gap-1">
           <span class="text-2xl font-semibold" style="font-family: var(--font-heading);">
-            25
+            {{ currentWeather.wind.speed }}
           </span>
           <span class="text-sm">m/s</span>
         </div>
       </div>
 
       <!-- Condition -->
-      <div class="flex flex-col gap-2 p-4 rounded-xl transition-all duration-200 hover:bg-black/5">
+      <div class="flex flex-col gap-2 p-4 rounded-xl transition-all duration-200 hover:bg-black/5"
+        v-if="currentWeather.weather && currentWeather.weather[0]">
         <div class="flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -100,7 +117,7 @@
           </span>
         </div>
         <span class="text-lg font-semibold capitalize truncate" style="font-family: var(--font-heading);">
-          Test condition
+          {{ currentWeather.weather[0].main }}
         </span>
       </div>
     </div>

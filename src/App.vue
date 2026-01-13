@@ -21,6 +21,12 @@ const handleSearch = (city: string) => {
   fetchWeatherData(city);
 }
 
+// Handle popular city clicks from EmptyState
+//Should trigger typing animation in SearchBar
+const handlePopularCityClick = (city: string) => {
+  searchBarRef.value?.setQueryWithAnimation(city);
+}
+
 </script>
 
 <template>
@@ -37,7 +43,7 @@ const handleSearch = (city: string) => {
 
     <!-- Empty State, when no data is available -->
     <div v-if="!isLoading && !weatherData && !error" class="w-full max-w-4xl">
-      <EmptyState />
+      <EmptyState @search="handlePopularCityClick" />
     </div>
 
     <!-- Weather Data Display, when data is available -->
@@ -46,7 +52,7 @@ const handleSearch = (city: string) => {
 
         <!-- Current Weather Card -->
         <div class="mb-8">
-          <CurrentWeather :weather="weatherData.current" :cityName="cityName" />
+          <CurrentWeather :currentWeather="weatherData.current" :cityName="cityName" />
         </div>
 
         <!-- Forecast Card -->

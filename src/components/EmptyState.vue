@@ -1,5 +1,11 @@
 <script setup lang="ts">
 import { POPULAR_CITIES } from '../constants';
+
+const emit = defineEmits<{ (e: 'search', city: string): void }>();
+
+const handleSearch = (city: string) => {
+    emit('search', city);
+}
 </script>
 
 <template>
@@ -31,7 +37,7 @@ import { POPULAR_CITIES } from '../constants';
                 Popular Cities
             </p>
             <div class="flex flex-wrap justify-center gap-2">
-                <button v-for="city in POPULAR_CITIES" :key="city"
+                <button v-for="city in POPULAR_CITIES" :key="city" @click="handleSearch(city)"
                     class="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer hover:shadow-md hover:scale-105">
                     {{ city }}
                 </button>

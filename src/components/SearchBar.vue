@@ -1,12 +1,14 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { MIN_SEARCH_LENGTH } from '../constants';
+import { ref, watch, nextTick } from 'vue';
+import { DEBOUNCE_MS, MIN_SEARCH_LENGTH } from '../constants';
 
 const emit = defineEmits<{
     (e: 'search', city: string): void;
 }>();
 
 const searchQuery = ref("");
+let debounceTimeout: ReturnType<typeof setTimeout>;
+let isAnimating = false;
 
 const handleSearch = () => {
     if (searchQuery.value.trim()) {
@@ -19,11 +21,45 @@ const clearSearch = () => {
     emit('search', "");
 }
 
+// Animate typing effect when setting query from outside this component
+const setQueryWithAnimation = async (city: string) => {
+    isAnimating = true;
+    clearTimeout(debounceTimeout);
+    searchQuery.value = '';
+    await nextTick();
+
+    // Typing each character with delay for nice effect
+    for (let i = 0; i <= city.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 40));
+        searchQuery.value = city.slice(0, i);
+    }
+
+    // Wait for Vue to process all reactive updates from the loop
+    await nextTick();
+
+    // Trigger search after animation
+    handleSearch();
+
+    // Clear any pending debounce that might have slipped through, then reset flag
+    clearTimeout(debounceTimeout);
+    isAnimating = false;
+};
+
+// Expose method to parent
+defineExpose({ setQueryWithAnimation });
+
 watch(searchQuery, (newVal) => {
+    // Skipping auto-search during animation
+    if (isAnimating) return;
+
+    clearTimeout(debounceTimeout);
+
     if (newVal.trim().length >= MIN_SEARCH_LENGTH) {
-        handleSearch()
+        debounceTimeout = setTimeout(() => {
+            handleSearch();
+        }, DEBOUNCE_MS);
     } else if (newVal.trim().length === 0) {
-        emit("search", "")
+        emit('search', '');
     }
 });
 </script>
