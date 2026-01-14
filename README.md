@@ -32,7 +32,7 @@ A modern, responsive weather dashboard built with Vue 3, TypeScript, and Tailwin
 
 ```bash
 git clone <repository-url>
-cd weather-app-prep
+cd cool-weather-app
 ```
 
 ### 2. Install dependencies
@@ -89,10 +89,13 @@ The app will be available at `http://localhost:5173`
 ```
 src/
 ├── components/           # Vue components
+│   ├── AppHeader.vue
 │   ├── CurrentWeather.vue
 │   ├── EmptyState.vue
+│   ├── ErrorMessage.vue
 │   ├── ForecastDay.vue
 │   ├── ForecastList.vue
+│   ├── Spinner.vue
 │   └── SearchBar.vue
 ├── composables/          # Vue composables (hooks)
 │   ├── useWeather.ts     # Weather state management
@@ -105,7 +108,8 @@ src/
 ├── constants/            # App constants
 │   └── index.ts
 ├── types/                # TypeScript types
-│   └── weather.ts
+│   ├── weather.ts
+│   └── forecast.ts 
 ├── App.vue               # Root component
 ├── main.ts               # Entry point
 └── style.css             # Global styles
