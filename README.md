@@ -20,7 +20,7 @@ A modern, responsive weather dashboard built with Vue 3, TypeScript, and Tailwin
 
 ## Prerequisites
 
-- **Node.js** 18+ 
+- **Node.js** 22.12+ (Required by Vite) 
 - **npm** or **yarn**
 - **OpenWeatherMap API Key** ([Get one free here](https://openweathermap.org/api))
 
